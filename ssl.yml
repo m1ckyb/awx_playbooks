@@ -1,2 +1,6 @@
+---
+
+- name: Deploy SSL
+
   roles:
     - { role: "nickjj.acme_sh", tags: ["acme_sh"] }
