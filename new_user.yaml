@@ -1,0 +1,13 @@
+---
+ - name: Create a login user
+     user:
+      name: awx
+      password: 'RbFh/9G1yxA9U'
+      groups: # Empty by default, here we give it some groups
+       - sudo
+       - awx
+      state: present
+      shell: /bin/bash       # Defaults to /bin/bash
+      system: no             # Defaults to no
+      createhome: yes        # Defaults to yes
+      home: /home/awx  # Defaults to /home/<username>
