@@ -1,0 +1,11 @@
+---
+- hosts: all #change to your hosts
+  become: yes
+
+  tasks:
+
+    - name: Remove awx
+      user:
+        name: awx
+        state: absent
+        remove: yes
