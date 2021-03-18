@@ -1,5 +1,8 @@
 ---
  - name: Create a login user
+   hosts: all
+ 
+   tasks:
      user:
       name: awx
       password: 'RbFh/9G1yxA9U'
