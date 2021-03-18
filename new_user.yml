@@ -7,7 +7,7 @@
     # DO NOT PUT PLAIN TEXT PASSWORDS HERE!
     # use encrypted passwords or put them in Ansible vault
     # but this is just a demo
-    vaulted_password: RbFh/9G1yxA9U
+    vaulted_password: 5c5689911483000cef623a6254d21425116f339a5e11c30a1aa33f32a475943306ed6c311c9f234cd0c2f2e682534c163fd66726f41b5232d9702fb38e5a4985
 
   tasks:
 
