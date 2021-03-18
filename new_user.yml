@@ -1,16 +1,23 @@
 ---
- - name: Create a login user
-   hosts: all
- 
-   tasks:
-     user:
-      name: awx
-      password: 'RbFh/9G1yxA9U'
-      groups: # Empty by default, here we give it some groups
-       - sudo
-       - awx
-      state: present
-      shell: /bin/bash       # Defaults to /bin/bash
-      system: no             # Defaults to no
-      createhome: yes        # Defaults to yes
-      home: /home/awx  # Defaults to /home/<username>
+- hosts: all #change to your hosts
+  become: yes
+
+  vars:
+    # NOTICE!!!:
+    # DO NOT PUT PLAIN TEXT PASSWORDS HERE!
+    # use encrypted passwords or put them in Ansible vault
+    # but this is just a demo
+    vaulted_password: RbFh/9G1yxA9U
+
+  tasks:
+
+    - name: Add user awx with a password
+      user:
+        name: awx
+        password: "{{ vaulted_password | password_hash('sha512') }}"
+        
+    - name: Add a user awx and add them to a group sudo
+      user:
+        name: johndoe
+        groups: sudo
+        append: yes        
