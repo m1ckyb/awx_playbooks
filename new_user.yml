@@ -19,6 +19,6 @@
         
     - name: Add a user awx and add them to a group sudo
       user:
-        name: "{{ usernaame }}"
+        name: "{{ username }}"
         groups: "{{ group }}"
         append: yes        
