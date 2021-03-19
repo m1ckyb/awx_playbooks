@@ -1,23 +1,14 @@
 ---
 - hosts: all #change to your hosts
   become: yes
-
-  vars:
-    # NOTICE!!!:
-    # DO NOT PUT PLAIN TEXT PASSWORDS HERE!
-    # use encrypted passwords or put them in Ansible vault
-    # but this is just a demo
-    vaulted_password: $6$n/iHbufY$xsObIDdhg4Zu0ld7cxrOs1ZvSAR.HyrYgx1KJBfuNRoaPD5FJFJPYIlTy0NAH3VJpqnFwEahgAsC7/rmOMreE/
-
-
   tasks:
 
-    - name: Add user awx with a password
+    - name: Creating user "{{ username }}" with admin access
       user:
         name: "{{ username }}"
-        password: "{{ password }}"
+        password: "{{ password | password_hash('sha512') }}"
         
-    - name: Add a user awx and add them to a group sudo
+    - name: Adding "{{ username }}" to group "{{ group }}" 
       user:
         name: "{{ username }}"
         groups: "{{ group }}"
