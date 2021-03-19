@@ -4,8 +4,8 @@
 
   tasks:
 
-    - name: Remove awx
+    - name: Remove user
       user:
-        name: awx
+        name: "{{ username }}"
         state: absent
         remove: yes
