@@ -4,4 +4,4 @@
  
   tasks:
     - name: Execute the script
-      command: sh /home/michael/kerfuffle/update.sh
+      command: cat /etc/motd  
