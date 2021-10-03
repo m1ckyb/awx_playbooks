@@ -1,0 +1,7 @@
+---
+- name: Update Ubuntu
+  hosts: all
+ 
+  tasks:
+    - name: Execute the script
+      command: sh /home/michael/kerfuffle/update.sh
