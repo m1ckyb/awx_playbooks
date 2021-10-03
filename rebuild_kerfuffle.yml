@@ -4,4 +4,6 @@
  
   tasks:
     - name: Execute the script
-      command: cat /etc/motd  
+      command: bash update.sh
+      args:
+        chdir: /home/michael/kerfuffle/
