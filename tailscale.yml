@@ -1,8 +1,22 @@
 - name: Servers
   hosts: all
-  roles:
-    - role: artis3n.tailscale
-      vars:
-        # Example pulling the API key from the env vars on the host running Ansible
-        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_KEY') }}"
-        tailscale_args: "--accept-routes }}"
+  become: true
+  become_method: sudo  
+ 
+  tasks:
+
+  - name: check the reboot-required file
+    register: tailscale_install_req
+    stat:
+      path: /var/lib/tailscale/tailscaled.state
+    register: tailscale_install_req
+
+  - name: launch the reboot
+    reboot:
+      msg: "Reboot with ansible..."
+      connect_timeout: 5
+      reboot_timeout: 300
+      pre_reboot_delay: 0
+      post_reboot_delay: 30
+      test_command: uptime
+    when: tailscale_install_req == False
