@@ -1,5 +1,5 @@
 ---
-- name: Reboot Oracle Hosts
+- name: Reboot Hosts
   hosts: oracle
   become: true
   become_method: sudo  
