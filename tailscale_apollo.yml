@@ -1,5 +1,5 @@
-- name: Servers
-  hosts: all
+- name: Tailscale install on Proxmox host apollo
+  hosts: apollo
   roles:
     - role: artis3n.tailscale
       vars:
