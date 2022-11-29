@@ -1,5 +1,5 @@
 - name: Servers
-  hosts: all
+  hosts: starbuck
   roles:
     - role: artis3n.tailscale
       vars:
