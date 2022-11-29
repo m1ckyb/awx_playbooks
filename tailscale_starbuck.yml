@@ -1,4 +1,4 @@
-- name: Servers
+- name: Tailscale install on Proxmox host starbuck
   hosts: starbuck
   roles:
     - role: artis3n.tailscale
