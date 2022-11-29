@@ -1,9 +1,0 @@
----
-- name: Update Ubuntu
-  hosts: all
- 
-  tasks:
-    - name: Execute the script
-      command: bash update.sh
-      args:
-        chdir: /home/michael/kerfuffle/
