@@ -8,6 +8,7 @@
       path: /etc/teleport.yaml
       
   - name: Copy file with owner and permissions
+    become: yes
     ansible.builtin.copy:
       src: /scripts/teleport-repo.sh
       dest: /opt/teleport-repo.sh
@@ -17,6 +18,7 @@
     when: not teleport_required_file.stat.exists      
       
   - name: Changing perm of "/opt/teleport-repo.sh", adding "+x"
+    become: yes
     file:
       dest: /opt/teleport-repo.sh
       mode: a+x
@@ -24,13 +26,12 @@
 
   - name: Start the DB batch upload
     become: yes
-    async: 10
-    poll: 0
     shell:
        "/opt/teleport-repo.sh"
     when: not teleport_required_file.stat.exists
    
   - name: Ansible Update Cache and install teleport
+    become: yes
     apt:
       name: teleport
       state: present
