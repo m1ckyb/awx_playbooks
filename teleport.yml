@@ -25,10 +25,10 @@
     when: not teleport_required_file.stat.exists      
 
   - name: Add Teleport Repo
-    become: yes
-    command: /opt/teleport-repo.sh
-    when: not teleport_required_file.stat.exists
     register: repo
+    become: yes
+    command: "/opt/teleport-repo.sh"
+    when: not teleport_required_file.stat.exists
     tags: repo
     
   - debug: msg="{{ repo.stdout-lines }}"    
