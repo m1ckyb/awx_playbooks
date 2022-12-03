@@ -1,5 +1,4 @@
 - hosts: teleport_nodes
-  gather_facts: no
 
   tasks:
   - name: See if teleport.yaml exists
