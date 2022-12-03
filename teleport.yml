@@ -24,16 +24,19 @@
       mode: a+x
     when: not teleport_required_file.stat.exists      
 
-  - name: Start the DB batch upload
+  - name: Add Teleport Repo
     become: yes
     shell:
        "/opt/teleport-repo.sh"
     when: not teleport_required_file.stat.exists
+    
+  - name: Update apt repo and cache
+    become: yes
+    apt: update_cache=yes force_apt_get=yes
    
   - name: Ansible Update Cache and install teleport
     become: yes
     apt:
       name: teleport
       state: present
-      update_cache: yes    
     when: not teleport_required_file.stat.exists            
