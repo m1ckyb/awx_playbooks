@@ -1,6 +1,6 @@
 ---
  - name: Dump
-   hosts: "{{ target|default('localhost') }}"
+   hosts: teleport_nodes
    tasks:
    - name: Facts
      setup:
