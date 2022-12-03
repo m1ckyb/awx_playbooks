@@ -26,7 +26,7 @@
 
   - name: Add Teleport Repo
     become: yes
-    shell: |
+    command: |
       sudo curl https://apt.releases.teleport.dev/gpg \
       -o /usr/share/keyrings/teleport-archive-keyring.asc
       source /etc/os-release
