@@ -7,27 +7,32 @@
     stat:
       path: /etc/teleport.yaml
       
-  - name: Copy file with owner and permissions
-    become: yes
-    ansible.builtin.copy:
-      src: /scripts/teleport-repo.sh
-      dest: /opt/teleport-repo.sh
-      owner: root
-      group: root
-      mode: '0644'     
-    when: not teleport_required_file.stat.exists      
+#  - name: Copy file with owner and permissions
+#    become: yes
+#    ansible.builtin.copy:
+#      src: /scripts/teleport-repo.sh
+#      dest: /opt/teleport-repo.sh
+#      owner: root
+#      group: root
+#      mode: '0644'     
+#    when: not teleport_required_file.stat.exists      
       
-  - name: Changing perm of "/opt/teleport-repo.sh", adding "+x"
-    become: yes
-    file:
-      dest: /opt/teleport-repo.sh
-      mode: a+x
-    when: not teleport_required_file.stat.exists      
+#  - name: Changing perm of "/opt/teleport-repo.sh", adding "+x"
+#    become: yes
+#    file:
+#      dest: /opt/teleport-repo.sh
+#      mode: a+x
+#    when: not teleport_required_file.stat.exists      
 
   - name: Add Teleport Repo
     become: yes
-    shell:
-       "/opt/teleport-repo.sh"
+    shell: |
+      sudo curl https://apt.releases.teleport.dev/gpg \
+      -o /usr/share/keyrings/teleport-archive-keyring.asc
+      source /etc/os-release
+      echo "deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.asc] \
+      https://apt.releases.teleport.dev/${ID?} ${VERSION_CODENAME?} stable/v11" \
+      | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
     when: not teleport_required_file.stat.exists
     
   - name: Update apt repo and cache
