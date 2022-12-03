@@ -1,4 +1,4 @@
-- hosts: teleport_nodes
+- hosts: all
 
   tasks:
   - name: See if teleport.yml exists
