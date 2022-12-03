@@ -28,10 +28,10 @@
     become: yes
     command: /opt/teleport-repo.sh
     when: not teleport_required_file.stat.exists
-    register: teleport-repo
-    tags: teleport-repo
+    register: repo
+    tags: repo
     
-  - debug: msg="{{ teleport-repo.stdout-lines }}"    
+  - debug: msg="{{ repo.stdout-lines }}"    
     
   - name: Update apt repo and cache
     become: yes
