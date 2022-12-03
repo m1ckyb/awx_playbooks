@@ -30,7 +30,7 @@
       -o /usr/share/keyrings/teleport-archive-keyring.asc
       source /etc/os-release
       echo "deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.asc] \
-      https://apt.releases.teleport.dev/${ID?} ${VERSION_CODENAME?} stable/v11" \
+      https://apt.releases.teleport.dev/{{ansible_distribution}} {{ansible_distribution_release}} stable/v11" \
       | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
     when: not teleport_required_file.stat.exists
       
