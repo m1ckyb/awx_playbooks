@@ -17,7 +17,7 @@
       | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
     when: 
       - not teleport_required_file.stat.exists
-      - ansible_facts['ansible_distribution'] == "Debian"    
+      - ansible_facts['distribution'] == "Debian"    
       
   - name: Add Teleport Repo (Ubuntu)
     become: yes
@@ -30,7 +30,7 @@
       | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
     when: 
       - not teleport_required_file.stat.exists
-      - ansible_facts['ansible_distribution'] == "Ubuntu"      
+      - ansible_facts['distribution'] == "Ubuntu"      
         
   - name: Ansible Update Cache and install teleport
     become: yes
