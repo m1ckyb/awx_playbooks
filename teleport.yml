@@ -25,14 +25,10 @@
 #    when: not teleport_required_file.stat.exists      
 
   - name: Add Teleport Repo
-    register: repo
     become: yes
     script: "/scripts/teleport-repo.sh"
     when: not teleport_required_file.stat.exists
-    tags: repo
-    
-  - debug: msg="{{ repo.stdout-lines }}"    
-    
+      
   - name: Update apt repo and cache
     become: yes
     apt: update_cache=yes force_apt_get=yes
