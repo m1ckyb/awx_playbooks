@@ -1,10 +1,10 @@
 - hosts: all
 
   tasks:
-  - name: See if teleport.yml exists
+  - name: See if teleport.yaml exists
     register: teleport_required_file
     stat:
-      path: /etc/teleport.yml
+      path: /etc/teleport.yaml
 
   - name: Test
     register: uptimeoutput
