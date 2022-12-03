@@ -9,8 +9,4 @@
   - name: Test
     register: uptimeoutput
     command: "uptime"
-    when: teleport_required_file.stat.exists
-
-  - debug:
-    var: uptimeoutput.stdout_lines  
-    when: teleport_required_file.stat.exists
+    when: not teleport_required_file.stat.exists
