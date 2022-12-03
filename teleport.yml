@@ -37,4 +37,14 @@
     apt:
       name: teleport
       state: present
-    when: not teleport_required_file.stat.exists            
+    when: not teleport_required_file.stat.exists         
+    
+  - name: Connect to Teleport Cluster
+    become: yes
+    shell: |  
+      sudo teleport start \
+      --roles=node \
+      --token=${INVITE_TOKEN?} \
+      --ca-pin=${CA_PIN?} \
+      --auth-server=${ADDR?}
+    when: not teleport_required_file.stat.exists          
