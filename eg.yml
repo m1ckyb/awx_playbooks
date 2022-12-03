@@ -18,7 +18,13 @@
 
     # Accessing an element of dictionary
     - debug:
-        msg: "{{ansible_apparmor.status}}"
+        msg: "{{ansible_distribution_version}}"
+
+    - debug:
+        msg: "{{ansible_distribution_release}}"
+        
+    - debug:
+        msg: "{{ansible_distribution}}"        
 
     # Accessing the list
     - debug:
