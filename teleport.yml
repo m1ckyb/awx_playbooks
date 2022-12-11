@@ -21,3 +21,10 @@
           (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
           (ansible_architecture == "x86_64")
 
+  - name: Download latest teleport arm64 version
+    apt: 
+      deb: "{{ teleport_package_aarch64_url }}"
+    when: (teleport_required_file.stat.exists) and
+          (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
+          (ansible_architecture == "aarch64")
+
