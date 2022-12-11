@@ -1,4 +1,6 @@
 - hosts: teleport_nodes
+  become: true
+  become_method: sudo  
 
   tasks:
   - name: See if teleport.yaml exists
