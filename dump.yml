@@ -1,6 +1,6 @@
 ---
  - name: Dump
-   hosts: 140.238.200.89
+   hosts: 192.168.1.183
    tasks:
    - name: Facts
      setup:
