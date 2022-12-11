@@ -10,5 +10,5 @@
     - name: print
       debug:
         msg: "Version of Teleport is {{ ansible_facts.packages['teleport'][0]['version'] }}"
-      when: ansible_facts.packages['teleport'][0]['version'] < "teleport_version"
+      when: ansible_facts.packages['teleport'][0]['version'] < teleport_version
 
