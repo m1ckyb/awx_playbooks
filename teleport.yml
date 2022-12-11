@@ -6,45 +6,13 @@
     stat:
       path: /etc/teleport.yaml  
 
-  - name: Add Teleport Repo (Debian)
-    become: yes
-    shell: |
-      sudo curl https://apt.releases.teleport.dev/gpg \
-      -o /usr/share/keyrings/teleport-archive-keyring.asc
-      source /etc/os-release
-      echo "deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.asc] \
-      https://apt.releases.teleport.dev/debian {{ansible_distribution_release}} stable/v11" \
-      | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
-    when: 
-      - not teleport_required_file.stat.exists
-      - ansible_facts['distribution'] == "Debian"    
-      
-  - name: Add Teleport Repo (Ubuntu)
-    become: yes
-    shell: |
-      sudo curl https://apt.releases.teleport.dev/gpg \
-      -o /usr/share/keyrings/teleport-archive-keyring.asc
-      source /etc/os-release
-      echo "deb [signed-by=/usr/share/keyrings/teleport-archive-keyring.asc] \
-      https://apt.releases.teleport.dev/ubuntu {{ansible_distribution_release}} stable/v11" \
-      | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null
-    when: 
-      - not teleport_required_file.stat.exists
-      - ansible_facts['distribution'] == "Ubuntu"      
-        
-  - name: Ansible Update Cache and install teleport
-    become: yes
-    apt:
-      name: teleport
-      state: present
-    when: not teleport_required_file.stat.exists         
-    
-  - name: Connect to Teleport Cluster
-    become: yes
-    shell: |  
-      sudo teleport start \
-      --roles=node \
-      --token="{{ lookup('env', 'TELEPORT_KEY') }}" \
-      --ca-pin="{{ lookup('env', 'TELEPORT_CA') }}" \
-      --auth-server="{{ lookup('env', 'TELEPORT_ADDR') }}"
-    when: not teleport_required_file.stat.exists          
+- name: Download latest teleport version
+  get_url: 
+    url="{{ teleport_package_url }}"
+    dest="/home/{{ ansible_env.USER }}/Downloads/{{ teleport_package_name }}.deb"
+  when: 
+    - teleport_required_file.stat.exists
+
+- name: Upgrade Teleport
+    apt: deb="/home/{{ ansible_env.USER }}/Downloads/{{ teleport_package_name }}.deb"
+    sudo: true
