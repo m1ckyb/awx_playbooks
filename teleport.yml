@@ -14,5 +14,5 @@
     - teleport_required_file.stat.exists
 
 - name: Upgrade Teleport
-    apt: deb="/home/{{ ansible_env.USER }}/Downloads/{{ teleport_package_name }}.deb"
-    sudo: true
+  apt: deb="/home/{{ ansible_env.USER }}/Downloads/{{ teleport_package_name }}.deb"
+  sudo: true
