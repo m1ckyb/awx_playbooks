@@ -7,12 +7,7 @@
       path: /etc/teleport.yaml  
 
 - name: Download latest teleport version
-  get_url: 
-    url="https://cdn.teleport.dev/teleport_11.1.2_amd64.deb"
-    dest="/home/awx/teleport.deb"
+  apt: https://cdn.teleport.dev/teleport_11.1.2_amd64.deb
   when: 
     - teleport_required_file.stat.exists
-
-- name: Upgrade Teleport
-  apt: deb="/home/awx/teleport.deb"
   sudo: true
