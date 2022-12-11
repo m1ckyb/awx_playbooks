@@ -6,8 +6,8 @@
     stat:
       path: /etc/teleport.yaml  
 
-- name: Download latest teleport version
-  apt: https://cdn.teleport.dev/teleport_11.1.2_amd64.deb
-  when: 
-    - teleport_required_file.stat.exists
-  sudo: true
+  - name: Download latest teleport version
+    apt: https://cdn.teleport.dev/teleport_11.1.2_amd64.deb
+    when: 
+      - teleport_required_file.stat.exists
+    sudo: true
