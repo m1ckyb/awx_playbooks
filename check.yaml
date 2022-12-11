@@ -1,6 +1,10 @@
+- hosts: teleport_nodes
+  become: true
+  become_method: sudo  
 
+  tasks:
 
-- name: Check whether a package called foobar is installed
-  ansible.builtin.debug:
-    msg: "{{ ansible_facts.packages['foobar'] | length }} versions of foobar are installed!"
-  when: "'foobar' in ansible_facts.packages"
+  - name: Check whether a package called teleport is installed
+    ansible.builtin.debug:
+      msg: "{{ ansible_facts.packages['teleport'] | length }} versions of foobar are installed!"
+    when: "'teleport' in ansible_facts.packages"
