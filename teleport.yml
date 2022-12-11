@@ -1,15 +1,22 @@
-- hosts: teleport_nodes
+- hosts: all,!152.67.103.175
   become: true
   become_method: sudo  
-
   tasks:
+  
   - name: See if teleport.yaml exists
     register: teleport_required_file
     stat:
       path: /etc/teleport.yaml  
+  
+  - name: check packages
+    package_facts:
+      manager: auto
+    when: 
+      - teleport_required_file.stat.exists      
 
   - name: Download latest teleport version
     apt: 
       deb: https://cdn.teleport.dev/teleport_11.1.2_amd64.deb
     when: 
+      - ansible_facts.packages['teleport'][0]['version'] < teleport_version
       - teleport_required_file.stat.exists
