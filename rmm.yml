@@ -1,0 +1,62 @@
+- hosts: all
+  become: true
+  become_method: sudo  
+  tasks:
+  
+  - name: See if tacticalagent binary exists
+    register: rmm_required_file
+    stat:
+      path: /usr/local/bin/tacticalagent
+
+  - name: Stop service tacticalagent, if started
+    ansible.builtin.service:
+      name: tacticalagent
+      state: stopped
+    when: rmm_required_file.stat.exists
+  
+  - name: Download latest tacticalagent x64 version
+    become: yes
+    get_url:
+      url: https://github.com/m1ckyb/rmmagent_dl/releases/download/{{ rmm_version }}/agent-amd64
+      backup: true
+      dest: /usr/local/bin/tacticalagent
+      mode: 0755
+      group: root
+      owner: root
+      # the request will timeout after 20 seconds
+      timeout: 20
+    when: (rmm_required_file.stat.exists) and
+          (ansible_architecture == "x86_64")
+
+  - name: Download latest tacticalagent arm64 version
+    become: yes
+    get_url:
+      url: https://github.com/m1ckyb/rmmagent_dl/releases/download/{{ rmm_version }}/agent-arm64
+      backup: true
+      dest: /usr/local/bin/tacticalagent
+      mode: 0755
+      group: root
+      owner: root
+      # the request will timeout after 20 seconds
+      timeout: 20
+    when: (rmm_required_file.stat.exists) and
+          (ansible_architecture == "aarch64")
+
+  - name: Download latest tacticalagent arm version
+    become: yes
+    get_url:
+      url: https://github.com/m1ckyb/rmmagent_dl/releases/download/{{ rmm_version }}/agent-arm
+      backup: true
+      dest: /usr/local/bin/tacticalagent
+      mode: 0755
+      group: root
+      owner: root
+      # the request will timeout after 20 seconds
+      timeout: 20
+    when: (rmm_required_file.stat.exists) and
+          (ansible_architecture == "armv7l")
+          
+  - name: Changing perm of "/usr/local/bin/tacticalagent", adding "+x"
+    file:
+      dest: /usr/local/bin/tacticalagent
+      mode: a+x          
