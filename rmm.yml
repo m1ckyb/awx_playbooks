@@ -60,3 +60,10 @@
     file:
       dest: /usr/local/bin/tacticalagent
       mode: a+x          
+    when: rmm_required_file.stat.exists
+    
+  - name: Start service tacticalagent, if stopped
+    ansible.builtin.service:
+      name: tacticalagent
+      state: started
+    when: rmm_required_file.stat.exists    
