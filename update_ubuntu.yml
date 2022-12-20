@@ -11,6 +11,10 @@
   
   - name: Upgrade all packages on all servers
     apt: upgrade=dist force_apt_get=yes
+    
+  - name: Remove dependencies that are no longer required
+    apt:
+      autoremove: yes    
 
 #  - name: check the reboot-required file
 #    register: reboot_required_file
