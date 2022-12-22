@@ -49,17 +49,26 @@
       cloudflared_latest_version: "{{ cloudflared_latest_release.json.tag_name }}"
     when: cloudflared_installed.stat.exists      
 
-  - name: Download cloudflared
-    command: curl -s https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb -o /tmp/cloudflared-stable-linux-amd64.deb
-    when: cloudflared_latest_version > cloudflared_installed_version
+  - name: Download cloudflared (x64)
+    command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-amd64.deb -o /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) &
+          (ansible_architecture == "x86_64") &
+          (cloudflared_latest_version > cloudflared_installed_version)
     ignore_errors: yes
+    
+  - name: Download cloudflared (arm64)
+    command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-arm64.deb -o /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) &
+          (ansible_architecture == "aarch64") &
+          (cloudflared_latest_version > cloudflared_installed_version)
+    ignore_errors: yes    
 
   - name: Install cloudflared
-    command: dpkg -i /tmp/cloudflared-stable-linux-amd64.deb
-    when: cloudflared_latest_version > cloudflared_installed_version
+    command: dpkg -i /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) &
+          (cloudflared_latest_version > cloudflared_installed_version)
     ignore_errors: yes
 
   - name: Prune Docker images
     command: docker image prune -af
     when: docker_installed.stat.exists
-      
