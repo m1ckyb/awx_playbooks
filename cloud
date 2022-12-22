@@ -1,0 +1,47 @@
+  - name: Check if cloudflared is installed
+    stat:
+      path: /usr/local/bin/cloudflared
+    register: cloudflared_installed
+
+  - name: Check installed cloudflared version
+    command: cloudflared --version
+    register: cloudflared_version
+    when: cloudflared_installed.stat.exists
+
+  - name: Extract cloudflared version
+    set_fact:
+      cloudflared_installed_version: "{{ cloudflared_version.stdout.split(' ')[1] }}"
+    when: cloudflared_installed.stat.exists      
+
+  - name: Get latest cloudflared version
+    uri:
+      url: https://api.github.com/repos/cloudflare/cloudflared/releases/latest
+      return_content: yes
+    register: cloudflared_latest_release
+    ignore_errors: yes
+    when: cloudflared_installed.stat.exists          
+
+  - name: Extract cloudflared latest version
+    set_fact:
+      cloudflared_latest_version: "{{ cloudflared_latest_release.json.tag_name }}"
+    when: cloudflared_installed.stat.exists      
+
+  - name: Download cloudflared (x64)
+    command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-amd64.deb -o /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) and
+          (ansible_architecture == "x86_64") and
+          (cloudflared_latest_version > cloudflared_installed_version)
+    ignore_errors: yes
+    
+  - name: Download cloudflared (arm64)
+    command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-arm64.deb -o /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) and
+          (ansible_architecture == "aarch64") and
+          (cloudflared_latest_version > cloudflared_installed_version)
+    ignore_errors: yes    
+
+  - name: Install cloudflared
+    command: dpkg -i /tmp/cloudflared.deb
+    when: (cloudflared_installed.stat.exists) and
+          (cloudflared_latest_version > cloudflared_installed_version)
+    ignore_errors: yes
