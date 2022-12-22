@@ -51,21 +51,21 @@
 
   - name: Download cloudflared (x64)
     command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-amd64.deb -o /tmp/cloudflared.deb
-    when: (cloudflared_installed.stat.exists) &
-          (ansible_architecture == "x86_64") &
+    when: (cloudflared_installed.stat.exists) and
+          (ansible_architecture == "x86_64") and
           (cloudflared_latest_version > cloudflared_installed_version)
     ignore_errors: yes
     
   - name: Download cloudflared (arm64)
     command: curl -s https://github.com/cloudflare/cloudflared/releases/download/{{ cloudflared_latest_version }}/cloudflared-linux-arm64.deb -o /tmp/cloudflared.deb
-    when: (cloudflared_installed.stat.exists) &
-          (ansible_architecture == "aarch64") &
+    when: (cloudflared_installed.stat.exists) and
+          (ansible_architecture == "aarch64") and
           (cloudflared_latest_version > cloudflared_installed_version)
     ignore_errors: yes    
 
   - name: Install cloudflared
     command: dpkg -i /tmp/cloudflared.deb
-    when: (cloudflared_installed.stat.exists) &
+    when: (cloudflared_installed.stat.exists) and
           (cloudflared_latest_version > cloudflared_installed_version)
     ignore_errors: yes
 
