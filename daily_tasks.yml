@@ -6,6 +6,11 @@
  
   tasks:
  
+  - name: Check if Docker is installed
+    stat:
+      path: /usr/bin/docker
+    register: docker_installed
+
   - name: Update apt repo and cache on all Debian/Ubuntu servers
     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
   
@@ -15,6 +20,11 @@
   - name: Remove dependencies that are no longer required
     apt:
       autoremove: yes    
+      
+  - name: Prune Docker images
+    command: docker image prune -af
+    when: docker_installed.stat.exists
+      
 
 #  - name: check the reboot-required file
 #    register: reboot_required_file
