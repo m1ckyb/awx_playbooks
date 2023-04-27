@@ -16,21 +16,21 @@
 
   - name: Download latest teleport x64 version
     apt: 
-      deb: "https://cdn.teleport.dev/teleport_{{ teleport_version }}}_amd64.deb"
+      deb: "{{ teleport_package_x64_url }}"
     when: (teleport_required_file.stat.exists) and
           (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
           (ansible_architecture == "x86_64")
 
   - name: Download latest teleport arm64 version
     apt: 
-      deb: "https://cdn.teleport.dev/teleport_{{ teleport_version }}}_arm64.deb"
+      deb: "{{ teleport_package_arm64_url }}"
     when: (teleport_required_file.stat.exists) and
           (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
           (ansible_architecture == "aarch64")
 
   - name: Download latest teleport arm version
     apt: 
-      deb: "https://cdn.teleport.dev/teleport_{{ teleport_version }}}_arm.deb"
+      deb: "{{ teleport_package_arm_url }}"
     when: (teleport_required_file.stat.exists) and
           (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
           (ansible_architecture == "armv7l")
