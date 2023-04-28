@@ -39,3 +39,5 @@
     ansible.builtin.systemd:
       state: restarted
       name: teleport
+    when: 
+      - teleport_required_file.stat.exists    
