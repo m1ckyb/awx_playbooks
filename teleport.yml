@@ -34,3 +34,8 @@
     when: (teleport_required_file.stat.exists) and
           (ansible_facts.packages['teleport'][0]['version'] < teleport_version) and
           (ansible_architecture == "armv7l")
+
+  - name: Restart Teleport Service
+    ansible.builtin.systemd:
+      state: restarted
+      name: teleport
